@@ -1,7 +1,7 @@
 # ===== Hyperparameters =====
-input_size: 2
+input_size: 4
 hidden_size: 64
 num_hidden_layers: 2
-output_size: 2
+output_size: 3
 learning_rate: 0.001
 num_epochs: 1000

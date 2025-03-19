@@ -2,7 +2,7 @@ import torch.nn as nn
 import torch.optim as optim
 import matplotlib.pyplot as plt
 from models.model import DynamicNN
-from data.data_loader import get_dummy_data
+from data.data_loader import load_data
 
 def train_model(hparams):
     losses = []
@@ -21,7 +21,7 @@ def train_model(hparams):
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     # ===== Load Data =====
-    X, y = get_dummy_data(input_size, output_size)
+    X, y = load_data()
 
     # ===== Training loop =====
     for epoch in range(num_epochs):
