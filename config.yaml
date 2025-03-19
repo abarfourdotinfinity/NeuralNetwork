@@ -1,0 +1,2 @@
+# ===== Config File =====
+device: cpu # cpu or cuda
