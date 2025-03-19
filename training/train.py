@@ -18,6 +18,7 @@ def train_model(hparams, config):
     output_size = hparams["output_size"]
     learning_rate = hparams["learning_rate"]
     num_epochs = hparams["num_epochs"]
+    test_size = hparams["test_size"]
 
     # ===== Model setup =====
     model = DynamicNN(input_size, hidden_layers, output_size).to(device)
@@ -25,9 +26,9 @@ def train_model(hparams, config):
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     # ===== Load Data =====
-    X, y = load_data()
-    X = X.to(device)
-    y = y.to(device)
+    X_train, _, y_train, _ = load_data(test_size)
+    X = X_train.to(device)
+    y = y_train.to(device)
 
     # ===== Training loop =====
     for epoch in range(num_epochs):
@@ -42,4 +43,7 @@ def train_model(hparams, config):
         if (epoch+1) % 10 == 0:
             print(f"Epoch {epoch+1}, Loss: {loss.item():.4f}")
     
+    # ===== Save the model =====
+    torch.save(model.state_dict(), "models/model.pth")
+
     return losses

@@ -1,2 +1,3 @@
 # ===== Config File =====
 device: cpu # cpu or cuda
+run: test # train or test
