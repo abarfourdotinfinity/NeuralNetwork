@@ -52,7 +52,7 @@ def scaler(df):
     df  = pd.DataFrame(scaler.fit_transform(df))
     
     # Save the scaler to a file so it can be loaded later
-    scaler_file = 'saved_scaler/scaler.pkl'  # You can adjust this path as needed
+    scaler_file = 'saved_scalers/scaler.pkl'  # You can adjust this path as needed
     joblib.dump(scaler, scaler_file)  # Save the scaler
     
     return df
