@@ -1,9 +1,9 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import matplotlib.pyplot as plt
-from models.model import DynamicNN
+from models import *
 from data.data_loader import load_data
+from training.training_loop import training_loop
 
 def train_model(hparams, config):
     losses = []
@@ -17,33 +17,22 @@ def train_model(hparams, config):
     hidden_layers = hparams["hidden_layers"]
     output_size = hparams["output_size"]
     learning_rate = hparams["learning_rate"]
-    num_epochs = hparams["num_epochs"]
     test_size = hparams["test_size"]
 
     # ===== Model setup =====
-    model = DynamicNN(input_size, hidden_layers, output_size).to(device)
-    criterion = nn.CrossEntropyLoss()
+    model_class = model_dict[config["model"]]
+    model = model_class(input_size, hidden_layers, output_size).to(device)
+
+    criterion = loss_dict[config["loss"]]
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     # ===== Load Data =====
-    X_train, _, y_train, _ = load_data(test_size)
-    X = X_train.to(device)
-    y = y_train.to(device)
+    A = load_data(test_size, config)
 
     # ===== Training loop =====
-    for epoch in range(num_epochs):
-        outputs = model(X)
-        loss = criterion(outputs, y)
-
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-
-        losses.append(loss.item())
-        if (epoch+1) % 10 == 0:
-            print(f"Epoch {epoch+1}, Loss: {loss.item():.4f}")
+    losses = training_loop(model, A, optimizer, criterion, hparams, config, device)
     
     # ===== Save the model =====
-    torch.save(model.state_dict(), "models/model.pth")
+    torch.save(model.state_dict(), f"saved_models/{config["model"]}.pth")
 
     return losses

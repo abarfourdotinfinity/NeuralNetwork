@@ -9,8 +9,10 @@ if __name__ == "__main__":
     # ===== Run training or testing =====
     if(config['run'] == 'train'):
         losses = train_model(hparams, config)
-        plot(hparams["num_epochs"], losses)
+        plot(hparams["epochs"], losses)
+
     elif(config['run'] == 'test'):
         inference_model(hparams, config)
+        
     else:
         print("Invalid run type. Please specify 'train' or 'test' in config.yaml")

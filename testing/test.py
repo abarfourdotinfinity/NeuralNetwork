@@ -1,7 +1,7 @@
 import torch
-import torch.nn as nn
-from models.model import DynamicNN
+from models import *
 from data.data_loader import load_data
+from testing.testing_model import test_model
 
 def inference_model(hparams, config):
     # ===== Device setup =====
@@ -15,24 +15,18 @@ def inference_model(hparams, config):
     test_size = hparams["test_size"]
 
     # ===== Model setup =====
-    model = DynamicNN(input_size, hidden_layers, output_size).to(device)
+    model_class = model_dict[config["model"]]
+    model = model_class(input_size, hidden_layers, output_size).to(device)
 
     # ===== Load the model =====
-    model.load_state_dict(torch.load("models/model.pth"))
+    model.load_state_dict(torch.load(f"saved_models/{config["model"]}.pth"))
 
     # ===== Load Test Data =====
-    _, X_test, _, y_test = load_data(test_size)
-    X_test = X_test.to(device)
-    y_test = y_test.to(device)
+    A = load_data(test_size, config)
 
     # ===== Evaluate the model =====
-    model.eval()  # Set the model to evaluation mode
-    with torch.no_grad():  # No need to track gradients during evaluation
-        outputs = model(X_test)
-        _, predicted = torch.max(outputs, 1)  # Get the predicted class
-        correct = (predicted == y_test).sum().item()
-        total = y_test.size(0)
+    accuracy = test_model(A, device, model, hparams, config)
 
-    accuracy = correct / total * 100
+    
     print(f"Test Accuracy: {accuracy:.2f}%")
     

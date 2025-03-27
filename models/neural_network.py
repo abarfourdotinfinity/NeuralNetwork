@@ -1,7 +1,7 @@
 import torch.nn as nn
 
 # ===== Dynamic Neural Network =====
-class DynamicNN(nn.Module):
+class neural_network(nn.Module):
     def __init__(self, input_size, hidden_layers, output_size):
         super().__init__()
         layers = []

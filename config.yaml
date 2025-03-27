@@ -1,3 +1,10 @@
 # ===== Config File =====
-device: cpu # cpu or cuda
+# General:
+device: cuda # cpu or cuda
 run: test # train or test
+model: lstm # neural_network
+loss: mse # loss function
+# Data:
+data_type: csv # url or csv
+data_path: data/filtered_traffic_data.csv #https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv # path to data
+columns: flow # columns to predict

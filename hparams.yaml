@@ -1,7 +1,10 @@
 # ===== Hyperparameters =====
-input_size: 4
-hidden_layers: [8, 16]
-output_size: 3
-learning_rate: 0.001
-num_epochs: 1000
+input_size: 10 # must be equal to time_step for LSTM
+hidden_layers: [100, 100, 100, 100, 100]
+output_size: 1 # must be 1 for LSTM
+learning_rate: 0.0001
+epochs: 100
 test_size: 0.2
+# for LSTM
+time_step: 10 
+batch_size: 16
